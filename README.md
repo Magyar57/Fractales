@@ -13,7 +13,7 @@ Here is an example of fractals I generated.
 The first fractal I generated. The seed of the Julia set is `z² - 3/4`.
 
 
-![ma_super_fractale 0.285 + 0.013i](ma_super_fractale 0.285 + 0.013i.png)
+![ma_super_fractale! 0.285 + 0.013i.png](ma_super_fractale! 0.285 plus 0.013i.png)
 
 An interesting fractal, from the suite `z² + c` with `c = 0.285 + 0.013i`.
 
