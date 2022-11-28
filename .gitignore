@@ -1,0 +1,13 @@
+# IDE folders
+.vs
+
+# Binaries folders
+x64
+Debug
+Release
+bin
+obj
+
+# Libraries
+Libraries/
+!Libraries/SFML-2.5.1 GOES HERE.txt
