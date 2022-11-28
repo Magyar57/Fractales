@@ -15,6 +15,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{3B3A1110-96D8-4207-8FED-C3F4B6C3E205}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Libraries\LIBS_README.md = Libraries\LIBS_README.md
 		BuildTools\PostBuildEvents.bat = BuildTools\PostBuildEvents.bat
 		README.md = README.md
 	EndProjectSection

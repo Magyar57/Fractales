@@ -9,5 +9,5 @@ bin
 obj
 
 # Libraries
-Libraries/
-!Libraries/SFML-2.5.1 GOES HERE.txt
+Libraries/*
+!Libraries/LIBS_README.md

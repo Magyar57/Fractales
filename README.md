@@ -2,22 +2,39 @@
 
 ## Description
 
-This repos contains a personnal project blablabla
+This repos contains a personnal project created within one week. 
+It can generate fractals pictures based on a Julia Set, and explore such a fractal in real time (zoom in and out, go left, right, up and down).
+It generates two executables: `FractalesJulia.exe` and `FractalesUI.exe`. The first one creates a picture (.png) of a fractal, and the second one is in real time.
 
-Pictures (when project is ready)
+Here is an example of the first two pictures I generated.
 
-## Project, compilation and execution
+![ma_super_fractale!.png](ma_super_fractale!.png)
+
+The first fractal I generated. The seed of the Julia set is `z² - 3/4`.
+
+![ma_super_fractale 0.285 + i0.013](ma_super_fractale 0.285 + 0.013i.png)
+
+An interesting fractal, from the suite `z² + c` with `c = 0.285 + 0.013i`.
+
+## Solution organisation
 
 There are currentely three projects integrated in the "Fractale" solution:
 - FractalesJulia: A starting C# project that generates and saves an image of a fractal.
-- FractalesUI: A real time graphical interface for exploring the generated fractals, and (in the future) beeing able to change the Julia set. It is implemented in C++, and using SFML.
-- CUDAShader: A project implementing code parallelization (executing on NVIDIA GPUs) for the former projects. It is written in CUDA and compiles into a .dll
+- FractalesUI: A real time graphical interface for exploring the generated fractals, and (if I continue this project one day) beeing able to change the Julia set. It is implemented in C++, and using SFML.
+- CUDAShader: A project implementing code parallelization (executing on NVIDIA GPUs) for the former projects. It is written in CUDA and compiles into a .dll file.
 
-BuildTools contains shell scripts that are executed after successful compilation.
+The BuildTools folder contains post-build scripts.
 
-These projects require the following settings to compile and run correctely:
-- FractalesJulia: works in any case. But it will be faster if CUDAShader works and compiles properly.
-- FractalesUI: needs SFML. You can download it [here](https://www.sfml-dev.org/download.php). It goes in the Libraries folder.
-- CUDAShader: Needs an **NVIDIA GPU** and cuda installed. The Cuda files must be located at `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\include` (or you'll have to change the compilation configuration of the project). If you don't have a RTX 2080 Ti or better (supporting sm_75), change this setting to `compute_52,sm_52` in the CUDAShader project properties `CUDAShader -> Cuda C/C++ -> Device -> Code Generation`
+## Execution
+
+These projects require the following settings to run correctely:
+- FractalesJulia: needs .NET framework installed. It will run faster if CUDAShader works and compiles properly, but can execute without it anyway.
+- FractalesUI: Needs an **NVIDIA GPU** and Cuda installed. The Cuda files must be located at `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\` (or you'll have to recompile). If your GPU is older than a 2080 Ti, you'll have to recompile as well.
+
+## Compilation
+
+- FractalesJulia: needs .NET framework.
+- FractalesUI: needs SFML. You can download it [here](https://www.sfml-dev.org/download.php). It goes in the Libraries folder. See the README for more informations.
+- CUDAShader: Needs an **NVIDIA GPU** and Cuda installed. The Cuda files must be located at `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\include` (or you'll have to change the compilation configuration of the project). If you don't have a RTX 2080 Ti or better (supporting sm_75), change the corresponding compilation setting to `compute_52,sm_52` (or less if needed) in the CUDAShader project properties `CUDAShader -> Cuda C/C++ -> Device -> Code Generation`.
 
 I did not try executing this on another OS than Windows. It might work with a few tweaks here and there.
