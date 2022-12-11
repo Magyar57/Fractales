@@ -24,6 +24,10 @@
 
 #define MAX_X_BLOCK_DIMENSION 896 // Limite trouvée par tests, pour tout le reste à 1
 
+const sf::Color::Black;
+const sf::Color::White;
+const sf::Color::Red;
+
 __declspec(dllexport) int** allocate_tab(int n, int m) {
     int** res;
     res = (int**)malloc(n * sizeof(int*));
@@ -100,7 +104,7 @@ __declspec(dllexport) void new_calculate_Julia(double c_re, double c_im, int** h
     int grid_dim = nbPixel / MAX_X_BLOCK_DIMENSION;
     dim3 grid_size(grid_dim); // aka number of blocks (per grid)
     dim3 block_size(block_dim); // aka number of thread (per blocks)
-
+    
     // Executing kernel
     new_calculate_Julia_GPU<<<grid_size, block_size>>>(c_re, c_im, device_tab, nbPixel, width, height, x_min, y_min, x_max, y_max);
     cuda_res = cudaDeviceSynchronize();
@@ -111,6 +115,39 @@ __declspec(dllexport) void new_calculate_Julia(double c_re, double c_im, int** h
 
     // Copy results from device to host
     for (int i = 0; i < nbPixel; i++) h_res[i / height][i % height] = device_tab[i];
+
+    // Free allocated memory
+    cudaFree(device_tab);
+}
+
+__declspec(dllexport) void set_pixel_color(sf::Image& img, double c_re, double c_im, int** h_res, int width, int height, double x_min, double y_min, double x_max, double y_max) {
+    cudaError_t cuda_res;
+    int nbPixel = width * height;
+    int* device_tab;
+
+    // Allocate device memory (no need to init)
+    // Using one dimensionnal array (seems to be better for cuda programming)
+    cuda_res = cudaMallocManaged(&device_tab, nbPixel * sizeof(int));
+    if (cuda_res != cudaSuccess) { perror("cudaMallocManaged"); exit(EXIT_FAILURE); }
+
+    // Determining dimension to execute
+    int block_dim = MAX_X_BLOCK_DIMENSION; // we're using only on dimensionnal blocks (since we cannot go ver 896, for no found reason...)
+    int grid_dim = nbPixel / MAX_X_BLOCK_DIMENSION;
+    dim3 grid_size(grid_dim); // aka number of blocks (per grid)
+    dim3 block_size(block_dim); // aka number of thread (per blocks)
+
+    // Executing kernel
+    new_calculate_Julia_GPU << <grid_size, block_size >> > (c_re, c_im, device_tab, nbPixel, width, height, x_min, y_min, x_max, y_max);
+    cuda_res = cudaDeviceSynchronize();
+    if (cuda_res != cudaSuccess) {
+        std::cout << "\n" << cuda_res << std::endl;
+        perror("cudaDeviceSynchronize"); exit(EXIT_FAILURE);
+    }
+
+
+    // Copy results from device to host
+    //for (int i = 0; i < nbPixel; i++) h_res[i / height][i % height] = device_tab[i];
+    set_pixel_color_GPU << <grid_size, block_size >> > (img, device_tab, width, height);
 
     // Free allocated memory
     cudaFree(device_tab);
@@ -199,6 +236,21 @@ __global__ void new_calculate_Julia_GPU(double c_re, double c_im, int* d_res, co
 
     if (z0_re == 0) d_res[i *height + j] = -1; // Ox
     if (z0_im == 0) d_res[i * height + j] = -1; // Ox
+
+}
+
+__global__ void set_pixel_color_GPU(sf::Image& img, int* d_input, const int width, const int height) {
+    int n = blockDim.x * blockIdx.x + threadIdx.x; // index of thread: block_idx * 896 + thread_idx     // For fullHD: blockIdx € [0,2315] and threadIdx € [0,896] so n € [0, 2315*896[
+    int i = n / height;
+    int j = n % height;
+
+    if (!(n < width*height)) return;
+
+    sf::Color cur_color = (d_input[n] == 1) ? sf::Color::Black : sf::Color::White;
+    if (d_input[n] == -1) cur_color = sf::Color::Red;
+    img.setPixel(i, j, cur_color);
+
+    sf::Color a = 
 
 }
 

@@ -86,7 +86,11 @@ void PlanComplexeWindow::update() {
     handleEvents();
 
     if (scope_updated) {
-        new_calculate_Julia(0.285, 0.013, current_fractale_results, width, height, scope.xMin, scope.yMin, scope.xMax, scope.yMax); // Dll function (parallelized)
+        // new_calculate_Julia(0.285, 0.013, current_fractale_results, width, height, scope.xMin, scope.yMin, scope.xMax, scope.yMax); // Dll function (parallelized)
+      
+        // Dll function (parallelized + sets color on fractale_image)
+        set_pixel_color(fractale_image, 0.285, 0.013, current_fractale_results, width, height, scope.xMin, scope.yMin, scope.xMax, scope.yMax);
+        
         sf::Color cur_color;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {

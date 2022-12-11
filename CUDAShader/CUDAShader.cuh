@@ -4,6 +4,8 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 
+#include <SFML/graphics.hpp>
+
 extern "C" {
     
     /*
@@ -30,11 +32,14 @@ extern "C" {
     */
     __declspec(dllexport) void calculate_Julia(double c_re, double c_im, int** res, int width, int height, double scale, double offset_re, double offset_im);
     __declspec(dllexport) void new_calculate_Julia(double c_re, double c_im, int** res, int width, int height, double x_min, double y_min, double x_max, double y_max);
+    __declspec(dllexport) void set_pixel_color(sf::Image& img, double c_re, double c_im, int** h_res, int width, int height, double x_min, double y_min, double x_max, double y_max);
 }
 
 __global__ void calculate_Julia_GPU(double c_re, double c_im, int* h_res, const int nbPixel, const int width, const int height, double scale, double offset_re, double offset_im);
 
 __global__ void new_calculate_Julia_GPU(double c_re, double c_im, int* h_res, const int nbPixel, const int width, const int height, double x_min, double y_min, double x_max, double y_max);
+
+__global__ void set_pixel_color_GPU(sf::Image& img, int* d_input, const int width, const int height);
 
 void calculate_Julia_CPU(double c_re, double c_im, int** res, int width, int height, double scale, double offset_re, double offset_im);
 bool isSuiteDivergente(double c_re, double c_im, double z0_re, double z0_im);
