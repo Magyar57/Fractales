@@ -11,3 +11,6 @@ obj
 # Libraries
 Libraries/*
 !Libraries/LIBS_README.md
+
+# macOS
+.DS_Store
