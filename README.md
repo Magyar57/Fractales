@@ -20,7 +20,7 @@ This project was then extended, after I learned how to use OpenGL. I used my GLS
 
 ![gl_ui.png](gl_ui.png)
 
-A screenshot of the FractalesUI-OpenGL window, showing the fractal in read, a grey gradient for the diverging speed, as well as the UI on the top left allowing to control the fractals parameters.
+A screenshot of the FractalesUI-OpenGL window, showing the fractal in red, a grey gradient for the diverging speed, as well as the UI on the top left allowing to control the fractals parameters.
 
 ## Solution organization
 
