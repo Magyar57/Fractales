@@ -1,0 +1,16 @@
+# Fichiers compilés
+*.out
+*.o
+main
+
+# Dossier de destination du CMake
+build
+
+# Images
+SRC/Images/**
+!SRC/Images/.gitkeep
+
+# Libraries
+SRC/ExternalLibs/**
+!SRC/ExternalLibs/README.md
+!SRC/ExternalLibs/download.sh
